@@ -1,8 +1,8 @@
-# CubeSat Orbital Mechanics
+# WashU Satellite Mission Modeling and Simulation Tool
 
-A comprehensive mission modeling and simulation tool developed for WashU Satellites CubeSat missions. This tool helps analyze, simulate, and plan orbital trajectories and mission parameters for small satellite missions.
+A comprehensive mission modeling and simulation tool developed for WashU Satellite's CubeSat missions. This tool helps analyze, simulate, and plan orbital trajectories and mission parameters for small satellite missions.
 
-## Features
+## Features (WIP)
 
 - Orbital trajectory calculation and visualization
 - Mission lifetime prediction
@@ -16,11 +16,7 @@ A comprehensive mission modeling and simulation tool developed for WashU Satelli
 
 ### Prerequisites
 
-- Python 3.8+
-- Required packages (install via pip):
-  ```bash
-  pip install -r requirements.txt
-  ```
+VS Code with the Dev Container extension installed.
 
 ### Installation
 
@@ -30,24 +26,20 @@ A comprehensive mission modeling and simulation tool developed for WashU Satelli
    ```
 
 2. Open in VS Code using the Dev Container:
-   
+
 3. Ensure the vpython library is installed (this is done automatically when the dev container is opened)
 
 ## Usage
 
-Run the app.py file to start the simulation.
+1. Run the app.py file to start the simulation.
 
-Select a mission from the dropdown menu.
+2. Select a mission from the dropdown menu.
 
-Click the Start Simulation button to begin the simulation.
+3. Click the Start Simulation button to begin the simulation.
 
 ## Documentation
 
 Detailed documentation is available in the `docs/` directory. This includes:
-- API Reference
-- Tutorial Guides
-- Example Scenarios
-- Mathematical Models
 
 ## Contributing
 
