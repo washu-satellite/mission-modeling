@@ -1,0 +1,63 @@
+{
+  "mission_name": "SCALAR",
+  "cubesat_configuration": {
+    "size": "1U",
+    "mass": 1.33,
+    "dimensions": {
+      "x": 0.1,
+      "y": 0.1,
+      "z": 0.1
+    },
+    "cross_sectional_area": 0.01,
+    "drag_coefficient": 2.2
+  },
+  "initial_conditions": {
+    "orbit": {
+      "altitude": 2000000,
+      "velocity": {
+        "x": 0.0,
+        "y": 7800.0,
+        "z": 0.0
+      },
+      "inclination": 51.6,
+      "eccentricity": 0.0,
+      "right_ascension": 0.0,
+      "argument_of_perigee": 0.0,
+      "true_anomaly": 0.0
+    },
+    "attitude": {
+      "quaternion": [1.0, 0.0, 0.0, 0.0]
+    }
+  },
+  "subsystems": {
+    "power": {
+      "solar_panels": {
+        "efficiency": 0.3,
+        "area": 0.01
+      },
+      "battery": {
+        "capacity": 10.0,
+        "initial_charge": 1.0
+      }
+    },
+    "communication": {
+      "frequency": 437.5e6,
+      "transmit_power": 1.0,
+      "antenna_gain": 2.0
+    },
+    "adcs": {
+      "control_mode": "align_with_velocity",
+      "magnetorquer_strength": 0.1
+    }
+  },
+  "simulation_parameters": {
+    "duration": 86400,
+    "time_step": 1.0,
+    "simulation_rate": 60,
+    "models": {
+      "orbit": ["gravity", "drag", "J2"],
+      "environment": ["atmosphere", "radiation", "magnetic_field"],
+      "subsystems": ["power", "thermal", "communication"]
+    }
+  }
+}
