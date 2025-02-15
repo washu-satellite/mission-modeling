@@ -25,8 +25,7 @@ class KinematicsModel:
 
     def calculate_forces(self, position, velocity, mass, cross_section, scale):
         """Calculate all forces acting on the satellite."""
-        r = position.mag / scale
-        altitude = r - self.R_earth
+        altitude = position.mag - self.R_earth
 
         # Calculate individual forces
         gravity = self._gravitational_force(position, mass, scale)
@@ -37,9 +36,16 @@ class KinematicsModel:
 
     def _gravitational_force(self, position, mass, scale):
         """Calculate gravitational force."""
-        r = position.mag / scale
-        return (-self.G * self.M_earth * mass / (r ** 2) * 
-                position.norm())
+        # Calculate force magnitude using unscaled position
+        r = position.mag  # position should already be in real units
+
+        # Calculate force magnitude
+        force_mag = self.G * self.M_earth * mass / (r ** 2)
+
+        # Calculate direction (normalized position vector pointing towards Earth)
+        direction = -position.norm()  # Negative because gravity pulls towards Earth
+
+        return force_mag * direction
 
     def _atmospheric_density(self, altitude):
         """Calculate atmospheric density at given altitude."""
@@ -74,10 +80,15 @@ class KinematicsModel:
 
     def update_kinematics(self, cubesat, dt, scale):
         """Update position and velocity based on forces."""
+
+        # Remove scaling from position vector
+        cubesat_pos = vector(cubesat.pos.x/scale, cubesat.pos.y/scale, cubesat.pos.z/scale)
+
+        # Perform calculations on unscaled kinemtaics
         net_force = self.calculate_forces(
-            cubesat.pos, 
-            cubesat.velocity, 
-            cubesat.mass, 
+            cubesat_pos,
+            cubesat.velocity,
+            cubesat.mass,
             cubesat.cross_sectional_area,
             scale
         )
@@ -85,4 +96,9 @@ class KinematicsModel:
         # Update motion
         cubesat.acceleration = net_force / cubesat.mass
         cubesat.velocity += cubesat.acceleration * dt
-        cubesat.pos += cubesat.velocity * dt * scale
+
+        # Reapply scaling to position vector
+        cubesat_pos = cubesat.velocity * dt
+        cubesat.pos += vector(cubesat_pos.x * scale, 
+                             cubesat_pos.y * scale, 
+                             cubesat_pos.z * scale)

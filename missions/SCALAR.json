@@ -53,7 +53,7 @@
   "simulation_parameters": {
     "duration": 86400,
     "time_step": 1.0,
-    "simulation_rate": 60,
+    "simulation_rate": 100,
     "models": {
       "orbit": ["gravity", "drag", "J2"],
       "environment": ["atmosphere", "radiation", "magnetic_field"],
