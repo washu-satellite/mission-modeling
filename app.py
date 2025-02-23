@@ -1,6 +1,6 @@
 from vpython import vector, box, sphere, canvas, color, textures, curve, rate, button, menu
 import json
-import math
+import time
 import threading
 from models.kinematics_model import KinematicsModel
 from models.attitude_control import AttitudeControlModel
@@ -82,8 +82,8 @@ class MissionSimulation:
     def simulate_mission(self, cubesat, config):
         """Main simulation loop."""
         dt = config["simulation_parameters"]["time_step"]
-        sim_rate = config["simulation_parameters"].get("simulation_rate", 100)
-        
+        sim_rate = config["simulation_parameters"]["simulation_rate"]
+
         # Initialize models
         self.kinematics_model = KinematicsModel(config)
         self.attitude_control = AttitudeControlModel(config)
@@ -97,12 +97,19 @@ class MissionSimulation:
         cubesat.velocity = vector(velocity["x"], velocity["y"], velocity["z"])
         cubesat.acceleration = vector(0, 0, 0)
 
+        last_update = time.time()
+        fixed_dt = 1.0 / sim_rate
+
         while not self.stop_event.is_set():
-            # Check altitude
-            r = cubesat.pos.mag / VISUAL_SCALE
-            altitude = r - 6.371e6
-            
-            if altitude < 100000:
+            # Check timing for physics calculations
+            current_time = time.time()
+            elapsed = current_time - last_update
+            if elapsed < fixed_dt:
+                continue
+
+            # Check if the orbit has decayed
+            current_alt =  (cubesat.pos.mag / VISUAL_SCALE) - self.kinematics_model.R_earth
+            if current_alt < 100000:
                 print("Satellite decayed.")
                 break
 
@@ -114,13 +121,16 @@ class MissionSimulation:
 
             # Update visualization
             self.trail.append(pos=cubesat.pos)
-            if self.trail.npoints > 1000:  # Limit trail length
+            if self.trail.npoints > 5000:  # Limit trail length
                 self.trail.pop(0)
 
             # Follow the cubesat with the camera
             self.scene.camera.follow(cubesat)
             
             rate(sim_rate)  # Control simulation speed
+
+            # Update physics timing
+            last_update = current_time
 
     def start_simulation(self, *args):
         """Start the simulation with selected mission."""
