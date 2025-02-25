@@ -11,6 +11,22 @@
     "cross_sectional_area": 0.01,
     "drag_coefficient": 2.2
   },
+  "launch_conditions": {
+    "launch_date": "2026-01-01",
+    "launch_site": "Kennedy Space Center",
+    "launch_vehicle": "Falcon 9",
+   "orbit": {
+      "type": "sun-synchronous",
+      "altitude_range": {
+        "min_km": 500,
+        "max_km": 600
+      },
+      "inclination_deg_range": {
+        "min_deg": 97.4,
+        "max_deg": 97.78
+      }
+    }
+  },
   "initial_conditions": {
     "orbit": {
       "altitude": 2000000,

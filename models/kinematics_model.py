@@ -102,3 +102,35 @@ class KinematicsModel:
         cubesat.pos += vector(cubesat_pos.x * scale, 
                              cubesat_pos.y * scale, 
                              cubesat_pos.z * scale)
+
+    def calculate_initial_velocity(self, position, scale):
+        """
+        Calculate the initial orbital velocity based on launch conditions' altitude range.
+        Uses average altitude and inclination for simulation.
+        """
+        # Get altitude range from launch conditions (in km)
+        launch_conditions = self.config["launch_conditions"]
+        alt_range = launch_conditions["orbit"]["altitude_range"]
+        incl_range = launch_conditions["orbit"]["inclination_range"]
+        
+        # Calculate average altitude and inclination
+        avg_altitude = (alt_range["min_km"] + alt_range["max_km"]) / 2 * 1000  # Convert to meters
+        avg_inclination = (incl_range["min_deg"] + incl_range["max_deg"]) / 2
+        
+        # Calculate orbital velocity for average altitude
+        r = self.R_earth + avg_altitude
+        velocity_mag = math.sqrt(self.G * self.M_earth / r)
+        
+        # Calculate velocity direction considering inclination
+        pos_normalized = position.norm()
+        inclination_rad = math.radians(avg_inclination)
+        
+        # Create velocity vector considering inclination
+        # Rotate the perpendicular vector by inclination angle
+        velocity_direction = vector(
+            -pos_normalized.y * math.cos(inclination_rad),
+            pos_normalized.x * math.cos(inclination_rad),
+            math.sin(inclination_rad)
+        ).norm()
+        
+        return velocity_direction * velocity_mag

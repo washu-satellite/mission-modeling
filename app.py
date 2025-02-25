@@ -95,6 +95,8 @@ class MissionSimulation:
 
         cubesat.pos = self.kinematics_model.calculate_initial_position(0, 0, altitude, VISUAL_SCALE)
         cubesat.velocity = vector(velocity["x"], velocity["y"], velocity["z"])
+       
+
         cubesat.acceleration = vector(0, 0, 0)
 
         last_update = time.time()
