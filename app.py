@@ -89,12 +89,15 @@ class MissionSimulation:
         self.attitude_control = AttitudeControlModel(config)
 
         # Set initial position and velocity
-        initial_conditions = config["initial_conditions"]
-        altitude = initial_conditions["orbit"]["altitude"]
-        velocity = initial_conditions["orbit"]["velocity"]
+        launch_conditions = config["launch_conditions"]["orbit"]
+        altitude = (launch_conditions["altitude_range"]["min_km"] + 
+                   launch_conditions["altitude_range"]["max_km"]) / 2 * 1000  # Convert to meters
 
-        cubesat.pos = self.kinematics_model.calculate_initial_position(0, 0, altitude, VISUAL_SCALE)
-        cubesat.velocity = vector(velocity["x"], velocity["y"], velocity["z"])
+        initial_position = self.kinematics_model.calculate_initial_position(0, 0, altitude, VISUAL_SCALE)
+        initial_velocity = self.kinematics_model.calculate_initial_velocity(initial_position, VISUAL_SCALE)
+
+        cubesat.pos = initial_position
+        cubesat.velocity = initial_velocity
        
 
         cubesat.acceleration = vector(0, 0, 0)

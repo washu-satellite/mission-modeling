@@ -109,9 +109,9 @@ class KinematicsModel:
         Uses average altitude and inclination for simulation.
         """
         # Get altitude range from launch conditions (in km)
-        launch_conditions = self.config["launch_conditions"]
-        alt_range = launch_conditions["orbit"]["altitude_range"]
-        incl_range = launch_conditions["orbit"]["inclination_range"]
+        launch_conditions = self.config["launch_conditions"]["orbit"]
+        alt_range = launch_conditions["altitude_range"]
+        incl_range = launch_conditions["inclination_deg_range"]
         
         # Calculate average altitude and inclination
         avg_altitude = (alt_range["min_km"] + alt_range["max_km"]) / 2 * 1000  # Convert to meters
