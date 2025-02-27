@@ -30,12 +30,8 @@
   "initial_conditions": {
     "orbit": {
       "altitude": 2000000,
-      "velocity": {
-        "x": 0.0,
-        "y": 7800.0,
-        "z": 0.0
-      },
-      "inclination": 51.6,
+      
+      
       "eccentricity": 0.0,
       "right_ascension": 0.0,
       "argument_of_perigee": 0.0,
@@ -62,7 +58,7 @@
       "antenna_gain": 2.0
     },
     "adcs": {
-      "control_mode": "align_with_velocity",
+      "control_mode": "velocity_aligned",
       "magnetorquer_strength": 0.1
     }
   },
